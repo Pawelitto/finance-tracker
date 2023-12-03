@@ -11,22 +11,43 @@
       <USkeleton class="h-6 w-full" v-if="loading" />
       <div v-else class="flex space-x-1 items-center text-sm">
         <UIcon
-          name="i-heroicons-arrow-trending-up"
+          :name="icon"
           class="w-6 h-6"
-          :class="[color]"
+          :class="{ green: trendingUP, red: !trendingUP }"
         />
-        <div class="text0gray-500 dark:text-gray-400">30% vs last period</div>
+        <div class="text0gray-500 dark:text-gray-400">
+          {{ percentageTrend }} vs last period
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-defineProps({
+const props = defineProps({
   title: String,
   amount: Number,
   lastAmount: Number,
   color: String,
   loading: Boolean,
+});
+
+const trendingUP = computed(() => props.amount >= props.lastAmount);
+const icon = computed(() =>
+  trendingUP.value
+    ? "i-heroicons-arrow-trending-up"
+    : "i-heroicons-arrow-trending-down"
+);
+const percentageTrend = computed(() => {
+  if (props.amount === 0 || props.lastAmount === 0) return "∞%";
+
+  const bigger = Math.max(props.amount, props.lastAmount);
+  const lower = Math.min(props.amount, props.lastAmount);
+
+  const ratio = ((bigger - lower) / lower) * 100;
+
+  // console.log(bigger, lower, ratio, Math.ceil(ratio));
+
+  return `${Math.ceil(ratio)}%`;
 });
 </script>
 <style scoped>
