@@ -37,6 +37,13 @@
       :loading="false"
     />
   </section>
+
+  <section>
+    <Transaction />
+    <Transaction />
+    <Transaction />
+    <Transaction />
+  </section>
 </template>
 <script setup>
 import { transactionViewOptions } from "~/constants";
