@@ -92,12 +92,15 @@ const {
   },
 } = useFetchTransactions(current);
 
+await refresh();
+
 const {
+  refresh: refreshPrevious,
   transactions: {
     incomeTotal: previousIncomeTotal,
     expenseTotal: previousExpenseTotal,
   },
 } = useFetchTransactions(previous);
 
-await refresh();
+await refreshPrevious();
 </script>
