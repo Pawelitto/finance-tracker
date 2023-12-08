@@ -23,11 +23,12 @@
       :loading="pending"
     />
     <Trend
-      color="red"
+      color="sky"
       title="Saving"
       :amount="savingTotal"
       :last-amount="previousSavingTotal"
       :loading="pending"
+      :showTrend="false"
     />
     <Trend
       color="green"

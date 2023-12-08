@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="font-bold" :class="[color]">{{ title }}</div>
+    <div class="font-bold" :class="`text-${color}-600 dark:text-${color}-400`">
+      {{ title }}
+    </div>
 
     <div class="text-2xl font-extrabold text-black dark:text-white mb-2">
       <USkeleton class="h-8 w-full" v-if="loading" />
       <div v-else>{{ currency }}</div>
     </div>
 
-    <div>
+    <div v-if="showTrend">
       <USkeleton class="h-6 w-full" v-if="loading" />
       <div v-else class="flex space-x-1 items-center text-sm">
         <UIcon
@@ -23,11 +25,20 @@
   </div>
 </template>
 <script setup>
+import { boolean } from "zod";
+
 const props = defineProps({
   title: String,
   amount: Number,
   lastAmount: Number,
-  color: String,
+  color: {
+    type: String,
+    default: "green",
+  },
+  showTrend: {
+    type: boolean,
+    default: true,
+  },
   loading: Boolean,
 });
 
@@ -55,12 +66,3 @@ const percentageTrend = computed(() => {
   return `${Math.ceil(ratio)}%`;
 });
 </script>
-<style scoped>
-.green {
-  @apply text-green-600 dark:text-green-400;
-}
-
-.red {
-  @apply text-red-600 dark:text-red-400;
-}
-</style>
