@@ -1,29 +1,93 @@
 <template>
-  <Ucard v-if="!success">
-    <template #header> Sign-in to Finance Tracker </template>
+  <div class="flex items-center justify-between">
+    <div class="w-1/3 px-2">
+      <Ucard v-if="!success">
+        <template #header> Sign-in to Finance Tracker </template>
 
-    <form @submit.prevent="handleLogin">
-      <UFormGroup
-        label="Email"
-        name="email"
-        class="mb-4"
-        :required="true"
-        help="You will recive an email with the confirmation link"
-      >
-        <UInput type="email" placeholder="Email" v-model="email" required />
-      </UFormGroup>
+        <form @submit.prevent="handleLogin">
+          <UFormGroup
+            label="Email"
+            name="email"
+            class="mb-4"
+            :required="true"
+            help="You will recive an email with the confirmation link"
+          >
+            <UInput type="email" placeholder="Email" v-model="email" required />
+          </UFormGroup>
 
-      <UButton
-        type="submit"
-        variant="solid"
-        color="black"
-        :loading="pending"
-        :disabled="pending"
-        >Sign-in</UButton
-      >
-    </form>
-  </Ucard>
-  <UCard v-else>
+          <UButton
+            type="submit"
+            variant="solid"
+            color="black"
+            :loading="pending[0]"
+            :disabled="pending[0]"
+            >Sign-in</UButton
+          >
+        </form>
+      </Ucard>
+    </div>
+
+    <div class="w-1/3 px-2">
+      <Ucard v-if="!success">
+        <template #header> Sign-in to Finance Tracker </template>
+
+        <div class="py-4">Register</div>
+        <form @submit.prevent="handleRegister">
+          <UFormGroup
+            label="Email"
+            name="register_email"
+            class="mb-4"
+            :required="true"
+          >
+            <UInput
+              type="email"
+              placeholder="Email"
+              v-model="register_email"
+              required
+            />
+          </UFormGroup>
+
+          <UFormGroup
+            label="Password"
+            name="register_password"
+            class="mb-4"
+            :required="true"
+          >
+            <UInput
+              type="password"
+              placeholder="Password"
+              v-model="register_password"
+              required
+            />
+          </UFormGroup>
+
+          <UFormGroup
+            label="Retype Password"
+            name="retype_password"
+            class="mb-4"
+            :required="true"
+          >
+            <UInput
+              type="password"
+              placeholder="Password"
+              v-model="retype_password"
+              required
+            />
+          </UFormGroup>
+
+          <UButton
+            type="submit"
+            variant="solid"
+            color="black"
+            :loading="pending[1]"
+            :disabled="pending[1]"
+            >Sign-in</UButton
+          >
+        </form>
+      </Ucard>
+    </div>
+  </div>
+  <UCard v-if="success">
     <template #header> Email has been sent </template>
 
     <div class="text-center">
@@ -38,14 +102,18 @@
 <script setup>
 const success = ref(false);
 const email = ref("");
-const pending = ref(false);
-const { toastError } = useAppToast();
+const password = ref("");
+const register_email = ref("");
+const register_password = ref("");
+const retype_password = ref("");
+const pending = ref([false, false]);
+const { toastError, toastSuccess } = useAppToast();
 const supabase = useSupabaseClient();
 
 useRedirectIfAuthtenticated();
 
 const handleLogin = async () => {
-  pending.value = true;
+  pending.value[0] = true;
 
   try {
     const { error } = await supabase.auth.signInWithOtp({
@@ -64,7 +132,35 @@ const handleLogin = async () => {
       success.value = true;
     }
   } finally {
-    pending.value = false;
+    pending.value[0] = false;
+  }
+};
+
+const handleRegister = async () => {
+  pending.value[1] = true;
+  if (register_password.value !== retype_password.value) return;
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: register_email.value,
+      password: register_password.value,
+      options: {
+        emailRedirectTo: "http://localhost:3000",
+      },
+    });
+
+    if (error) {
+      toastError({
+        title: "Error with registration",
+        description: error.message,
+      });
+    } else {
+      toastSuccess({
+        title: "User created successfuly",
+      });
+    }
+  } finally {
+    pending.value[1] = false;
   }
 };
 </script>

@@ -36,7 +36,7 @@ const props = defineProps({
     default: "green",
   },
   showTrend: {
-    type: boolean,
+    type: Boolean,
     default: true,
   },
   loading: Boolean,
