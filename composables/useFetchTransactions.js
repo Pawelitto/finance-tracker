@@ -10,14 +10,21 @@ export const useFetchTransactions = (period) => {
   const expense = computed(() =>
     transactions.value.filter((t) => t.type === "Expense")
   );
+  const saving = computed(() =>
+    transactions.value.filter((t) => t.type === "Saving")
+  );
   const incomeCount = computed(() => income.value.length);
   const expenseCount = computed(() => expense.value.length);
+  const savingCount = computed(() => saving.value.length);
 
   const incomeTotal = computed(() =>
     income.value.reduce((sum, transaction) => sum + transaction.amount, 0)
   );
   const expenseTotal = computed(() =>
     expense.value.reduce((sum, transaction) => sum + transaction.amount, 0)
+  );
+  const savingTotal = computed(() =>
+    saving.value.reduce((sum, transaction) => sum + transaction.amount, 0)
   );
 
 
@@ -70,10 +77,13 @@ export const useFetchTransactions = (period) => {
       },
       income,
       expense,
+      saving,
       incomeTotal,
       expenseTotal,
+      savingTotal,
       incomeCount,
       expenseCount,
+      savingCount,
     },
     refresh,
     pending

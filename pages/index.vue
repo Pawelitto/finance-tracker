@@ -23,17 +23,17 @@
       :loading="pending"
     />
     <Trend
+      color="red"
+      title="Saving"
+      :amount="savingTotal"
+      :last-amount="previousSavingTotal"
+      :loading="pending"
+    />
+    <Trend
       color="green"
       title="Investments"
       :amount="4000"
       :last-amount="3000"
-      :loading="pending"
-    />
-    <Trend
-      color="red"
-      title="Saving"
-      :amount="4000"
-      :last-amount="5000"
       :loading="pending"
     />
   </section>
@@ -42,8 +42,8 @@
     <div class="">
       <h2 class="text-2xl font-extrabold">Transactions</h2>
       <div class="text-gray-500 dark:text-gray-400">
-        You have {{ incomeCount }} incomes and {{ expenseCount }} expanses the
-        period
+        You have {{ incomeCount }} incomes and {{ expenseCount }} expanses and
+        {{ savingCount }} saving the period
       </div>
     </div>
     <div>
@@ -91,8 +91,10 @@ const {
   transactions: {
     incomeCount,
     expenseCount,
+    savingCount,
     incomeTotal,
     expenseTotal,
+    savingTotal,
     grouped: { byDate },
   },
 } = useFetchTransactions(current);
@@ -104,6 +106,7 @@ const {
   transactions: {
     incomeTotal: previousIncomeTotal,
     expenseTotal: previousExpenseTotal,
+    savingTotal: previousSavingTotal,
   },
 } = useFetchTransactions(previous);
 
