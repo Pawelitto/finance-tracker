@@ -1,18 +1,26 @@
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex flex-col md:flex-row items-center justify-between">
     <div class="w-1/3 px-2">
       <Ucard v-if="!success">
         <template #header> Sign-in to Finance Tracker </template>
 
         <form @submit.prevent="handleLogin">
+          <UFormGroup label="Email" name="email" class="mb-4" :required="true">
+            <UInput type="email" placeholder="Email" v-model="email" required />
+          </UFormGroup>
+
           <UFormGroup
-            label="Email"
-            name="email"
+            label="Password"
+            name="login_password"
             class="mb-4"
             :required="true"
-            help="You will recive an email with the confirmation link"
           >
-            <UInput type="email" placeholder="Email" v-model="email" required />
+            <UInput
+              type="password"
+              placeholder="Password"
+              v-model="login_password"
+              required
+            />
           </UFormGroup>
 
           <UButton
@@ -81,7 +89,7 @@
             color="black"
             :loading="pending[1]"
             :disabled="pending[1]"
-            >Sign-in</UButton
+            >Sign-up</UButton
           >
         </form>
       </Ucard>
@@ -102,6 +110,7 @@
 <script setup>
 const success = ref(false);
 const email = ref("");
+const login_password = ref("");
 const password = ref("");
 const register_email = ref("");
 const register_password = ref("");
@@ -116,11 +125,9 @@ const handleLogin = async () => {
   pending.value[0] = true;
 
   try {
-    const { error } = await supabase.auth.signInWithOtp({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: email.value,
-      options: {
-        emailRedirectTo: "http://localhost:3000/confirm",
-      },
+      password: login_password.value,
     });
 
     if (error) {
