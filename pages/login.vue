@@ -1,99 +1,94 @@
 <template>
   <div class="flex flex-col md:flex-row items-center justify-between">
-    <div class="w-1/3 px-2">
-      <Ucard v-if="!success">
-        <template #header> Sign-in to Finance Tracker </template>
+    <UCard v-if="!success">
+      <template #header> Sign-in to Finance Tracker </template>
 
-        <form @submit.prevent="handleLogin">
-          <UFormGroup label="Email" name="email" class="mb-4" :required="true">
-            <UInput type="email" placeholder="Email" v-model="email" required />
-          </UFormGroup>
+      <form @submit.prevent="handleLogin">
+        <UFormGroup label="Email" name="email" class="mb-4" :required="true">
+          <UInput type="email" placeholder="Email" v-model="email" required />
+        </UFormGroup>
 
-          <UFormGroup
-            label="Password"
-            name="login_password"
-            class="mb-4"
-            :required="true"
-          >
-            <UInput
-              type="password"
-              placeholder="Password"
-              v-model="login_password"
-              required
-            />
-          </UFormGroup>
+        <UFormGroup
+          label="Password"
+          name="login_password"
+          class="mb-4"
+          :required="true"
+        >
+          <UInput
+            type="password"
+            placeholder="Password"
+            v-model="login_password"
+            required
+          />
+        </UFormGroup>
 
-          <UButton
-            type="submit"
-            variant="solid"
-            color="black"
-            :loading="pending[0]"
-            :disabled="pending[0]"
-            >Sign-in</UButton
-          >
-        </form>
-      </Ucard>
-    </div>
+        <UButton
+          type="submit"
+          variant="solid"
+          color="black"
+          :loading="pending[0]"
+          :disabled="pending[0]"
+          >Sign-in</UButton
+        >
+      </form>
+    </UCard>
+    <UCard v-if="!success">
+      <template #header> Sign-in to Finance Tracker </template>
 
-    <div class="w-1/3 px-2">
-      <Ucard v-if="!success">
-        <template #header> Sign-in to Finance Tracker </template>
+      <div class="py-4">Register</div>
+      <form @submit.prevent="handleRegister">
+        <UFormGroup
+          label="Email"
+          name="register_email"
+          class="mb-4"
+          :required="true"
+        >
+          <UInput
+            type="email"
+            placeholder="Email"
+            v-model="register_email"
+            required
+          />
+        </UFormGroup>
 
-        <div class="py-4">Register</div>
-        <form @submit.prevent="handleRegister">
-          <UFormGroup
-            label="Email"
-            name="register_email"
-            class="mb-4"
-            :required="true"
-          >
-            <UInput
-              type="email"
-              placeholder="Email"
-              v-model="register_email"
-              required
-            />
-          </UFormGroup>
+        <UFormGroup
+          label="Password"
+          name="register_password"
+          class="mb-4"
+          :required="true"
+        >
+          <UInput
+            type="password"
+            placeholder="Password"
+            v-model="register_password"
+            required
+          />
+        </UFormGroup>
 
-          <UFormGroup
-            label="Password"
-            name="register_password"
-            class="mb-4"
-            :required="true"
-          >
-            <UInput
-              type="password"
-              placeholder="Password"
-              v-model="register_password"
-              required
-            />
-          </UFormGroup>
+        <UFormGroup
+          label="Retype Password"
+          name="retype_password"
+          class="mb-4"
+          :required="true"
+        >
+          <UInput
+            type="password"
+            placeholder="Password"
+            v-model="retype_password"
+            required
+          />
+        </UFormGroup>
 
-          <UFormGroup
-            label="Retype Password"
-            name="retype_password"
-            class="mb-4"
-            :required="true"
-          >
-            <UInput
-              type="password"
-              placeholder="Password"
-              v-model="retype_password"
-              required
-            />
-          </UFormGroup>
-
-          <UButton
-            type="submit"
-            variant="solid"
-            color="black"
-            :loading="pending[1]"
-            :disabled="pending[1]"
-            >Sign-up</UButton
-          >
-        </form>
-      </Ucard>
-    </div>
+        <UButton
+          type="submit"
+          variant="solid"
+          color="black"
+          :loading="pending[1]"
+          :disabled="pending[1]"
+          >Sign-up</UButton
+        >
+      </form>
+    </UCard>
   </div>
   <UCard v-if="success">
     <template #header> Email has been sent </template>
